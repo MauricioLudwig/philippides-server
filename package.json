@@ -1,0 +1,34 @@
+{
+  "name": "philippides-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./src/app.ts",
+    "dev": "ts-node-dev --respawn ./src/app.ts",
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MauricioLudwig/philippides-server.git"
+  },
+  "author": "Mauricio Ludwig",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MauricioLudwig/philippides-server/issues"
+  },
+  "homepage": "https://github.com/MauricioLudwig/philippides-server#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.13",
+    "@types/node": "^14.10.1",
+    "@types/uuid": "^8.3.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.0.0-pre.62",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "uuid": "^8.3.0"
+  }
+}
