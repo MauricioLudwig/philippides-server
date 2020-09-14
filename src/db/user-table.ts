@@ -1,13 +1,13 @@
-import { IUser } from '../utils/definitions';
+import { IUserTable } from '../utils/definitions';
 
 class UserTable {
-  users: Array<IUser> = [];
+  users: IUserTable = {};
 
-  addUser() {
+  add() {
     // TODO implement add user function
   }
 
-  removeUser() {
+  remove() {
     // TODO implement remove user function
   }
 }

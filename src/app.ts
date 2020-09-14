@@ -8,12 +8,12 @@ require('./db/user-table'); // initialize mock user table
 // configuration
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
-const port = process.env.PORT || 3000;
+export const io = socketio(server);
+const port = process.env.PORT || 4000;
 
 // socket
-import socket from './utils/socket';
-io.on('connection', socket);
+import { config } from './utils/socket';
+io.on('connection', config);
 
 // server
 server.listen(port, () => {

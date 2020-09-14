@@ -1,7 +1,7 @@
 // all Type Definitions
 
-export interface IUser {
-  name: string;
+export interface IUserTable {
+  [key: string]: string;
 }
 
 export interface IMessage {
@@ -22,4 +22,6 @@ export interface IMessageRequest extends IRequest {
 
 export enum SocketType {
   NewMessage = 'new-message',
+  UserDisconnected = 'user-disconnected',
+  UserInactive = 'user-inactive',
 }
