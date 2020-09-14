@@ -1,12 +1,5 @@
 import { v4 as uuid } from 'uuid';
-
-interface IMessage {
-  id: string;
-  admin: boolean;
-  user: string | null;
-  message: string;
-  created: number;
-}
+import { IMessage } from './definitions';
 
 export class Message {
   id: string;
