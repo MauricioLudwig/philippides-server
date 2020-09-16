@@ -14,7 +14,6 @@ install Better Comments extension to view the comments in a better format.
 
 ### Testing
 Jest is used for all the test suites. ts-jest is used to avoid the intermediary step of transpiling the files.
-
 ```
 npm run test
 ```
