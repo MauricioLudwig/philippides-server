@@ -10,12 +10,22 @@ export class Message {
     this.created = this.getTimestamp();
   }
 
-  new(user: string, message: string): IMessage {
+  new(user: string, text: string): IMessage {
     return {
       id: this.id,
       admin: false,
       user,
-      message,
+      text,
+      created: this.created,
+    };
+  }
+
+  userConnected(): IMessage {
+    return {
+      id: this.id,
+      admin: true,
+      user: null,
+      text: `Damien connected to the chat. Say hello!`,
       created: this.created,
     };
   }
@@ -25,7 +35,7 @@ export class Message {
       id: this.id,
       admin: true,
       user: null,
-      message: `${user} left the chat, connection lost`,
+      text: `${user} left the chat, connection lost`,
       created: this.created,
     };
   }
@@ -35,7 +45,7 @@ export class Message {
       id: this.id,
       admin: true,
       user: null,
-      message: `${user} was disconnected due to inactivity`,
+      text: `${user} was disconnected due to inactivity`,
       created: this.created,
     };
   }

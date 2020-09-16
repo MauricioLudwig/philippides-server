@@ -1,14 +1,19 @@
-// all Type Definitions
+/**
+ * * All type definitions
+ */
 
 export interface IUserTable {
-  [key: string]: string;
+  [key: string]: {
+    socketId: string;
+    name: string;
+  };
 }
 
 export interface IMessage {
   id: string;
   admin: boolean;
   user: string | null;
-  message: string;
+  text: string;
   created: number;
 }
 
@@ -17,11 +22,12 @@ export interface IRequest {
 }
 
 export interface IMessageRequest extends IRequest {
-  message: string;
+  text: string;
 }
 
 export enum SocketType {
   NewMessage = 'new-message',
+  UserConnected = 'user-connected',
   UserDisconnected = 'user-disconnected',
   UserInactive = 'user-inactive',
 }

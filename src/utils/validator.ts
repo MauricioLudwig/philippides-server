@@ -1,4 +1,6 @@
-// Type Guards to ensure valid request data at runtime
+/**
+ * * Type guards to ensure valid request data at runtime
+ */
 
 import { IRequest, IMessageRequest } from './definitions';
 

@@ -3,12 +3,15 @@ import { IUserTable } from '../utils/definitions';
 class UserTable {
   users: IUserTable = {};
 
-  add() {
-    // TODO implement add user function
+  add(socketId: string, name: string): void {
+    this.users[name.toLowerCase()] = {
+      socketId,
+      name,
+    };
   }
 
-  remove() {
-    // TODO implement remove user function
+  remove(name: string): void {
+    delete this.users[name];
   }
 }
 
