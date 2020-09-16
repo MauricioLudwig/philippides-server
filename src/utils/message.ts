@@ -20,12 +20,12 @@ export class Message {
     };
   }
 
-  userConnected(): IMessage {
+  userConnected(user: string): IMessage {
     return {
       id: this.id,
       admin: true,
       user: null,
-      text: `Damien connected to the chat. Say hello!`,
+      text: `${user} connected to the chat. Say hello!`,
       created: this.created,
     };
   }
@@ -35,7 +35,7 @@ export class Message {
       id: this.id,
       admin: true,
       user: null,
-      text: `${user} left the chat, connection lost`,
+      text: `${user} was disconnected due to inactivity.`,
       created: this.created,
     };
   }
@@ -45,7 +45,7 @@ export class Message {
       id: this.id,
       admin: true,
       user: null,
-      text: `${user} was disconnected due to inactivity`,
+      text: `${user} left the chat, connection lost.`,
       created: this.created,
     };
   }

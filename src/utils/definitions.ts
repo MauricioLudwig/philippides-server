@@ -2,11 +2,14 @@
  * * All type definitions
  */
 
+export interface IUser {
+  id: string;
+  socketId: string | null;
+  name: string;
+}
+
 export interface IUserTable {
-  [key: string]: {
-    socketId: string;
-    name: string;
-  };
+  [key: string]: IUser;
 }
 
 export interface IMessage {
@@ -30,4 +33,6 @@ export enum SocketType {
   UserConnected = 'user-connected',
   UserDisconnected = 'user-disconnected',
   UserInactive = 'user-inactive',
+
+  ActiveUsers = 'active-users',
 }
