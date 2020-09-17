@@ -19,7 +19,7 @@ describe('test message generation', () => {
       ...arrange,
       admin: false,
       user: 'Mauricio',
-      message: 'This is my new message',
+      text: 'This is my new message',
     });
   });
 
@@ -30,7 +30,7 @@ describe('test message generation', () => {
       ...arrange,
       admin: true,
       user: null,
-      message: 'Damien left the chat, connection lost',
+      text: 'Damien was disconnected due to inactivity.',
     });
   });
 
@@ -41,7 +41,7 @@ describe('test message generation', () => {
       ...arrange,
       admin: true,
       user: null,
-      message: 'Kafka was disconnected due to inactivity',
+      text: 'Kafka left the chat, connection lost.',
     });
   });
 });

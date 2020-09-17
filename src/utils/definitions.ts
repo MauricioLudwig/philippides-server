@@ -1,5 +1,5 @@
 /**
- * * All type definitions
+ * * Collection of type definitions
  */
 
 export interface IUser {
@@ -29,10 +29,11 @@ export interface IMessageRequest extends IRequest {
 }
 
 export enum SocketType {
+  Connection = 'connection',
+  Disconnect = 'disconnect',
   NewMessage = 'new-message',
   UserConnected = 'user-connected',
   UserDisconnected = 'user-disconnected',
   UserInactive = 'user-inactive',
-
   ActiveUsers = 'active-users',
 }

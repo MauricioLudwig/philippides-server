@@ -24,4 +24,4 @@ All formatting is handled by Prettier. Additionally, all the strict TS rules are
 ### Logging
 Logging provided with winston. Custom configuration is used to enable a slightly different layout.
 
-### Assumptions
+![Alt text](/screenshots/log.PNG?raw=true "Log sample")

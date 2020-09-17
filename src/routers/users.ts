@@ -5,7 +5,14 @@ const router = express.Router();
 
 router.post('/users/login', (req, res): void => {
   try {
-    const { name }: { name: string } = req.body;
+    const { name }: { name: unknown } = req.body;
+
+    if (typeof name !== 'string') {
+      res.status(400).send({
+        error: `User name is required.`,
+      });
+      return;
+    }
 
     if (!userTable.isAvailable(name)) {
       res.status(400).send({

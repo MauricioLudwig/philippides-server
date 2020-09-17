@@ -15,16 +15,16 @@ class UserTable {
     return this.users[id];
   }
 
-  remove(socketId: string): string {
+  remove(socketId: string): IUser {
     const user = Object.values(this.users).find((o) => o.socketId === socketId);
 
     if (!user?.id) {
       throw new Error(`User not found.`);
     }
 
-    const { name } = user;
+    const deletedUser = { ...user };
     delete this.users[user.id];
-    return name;
+    return deletedUser;
   }
 
   exists(userId: string): boolean {
@@ -40,7 +40,6 @@ class UserTable {
   addSocketId(userId: string, socketId: string): IUser {
     const user = this.users[userId];
     user.socketId = socketId;
-    console.log('user', user);
     return user;
   }
 
