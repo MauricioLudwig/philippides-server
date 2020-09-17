@@ -25,14 +25,16 @@ server.listen(port, () => {
 const gracefulShutdown = (): void => {
   logger.info('initializing graceful shutdown');
 
-  server.close(() => {
-    process.exit(0);
+  io.close(() => {
+    server.close(() => {
+      process.exit(0);
+    });
   });
 
   setTimeout(() => {
-    logger.info('server was forcefully shutdown');
+    logger.error('forcefully shutting down server');
     process.exit(1);
-  }, 15000); // = 15 seconds
+  }, 30000); // = 30 seconds
 };
 
 process.on('SIGTERM', gracefulShutdown);
