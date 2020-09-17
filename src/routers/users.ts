@@ -1,5 +1,6 @@
 import express from 'express';
 import { userTable } from '../db/user-table';
+import { isValidString } from '../utils/validator';
 
 const router = express.Router();
 
@@ -7,9 +8,9 @@ router.post('/users/login', (req, res): void => {
   try {
     const { name }: { name: unknown } = req.body;
 
-    if (typeof name !== 'string') {
+    if (!isValidString(name)) {
       res.status(400).send({
-        error: `User name is required.`,
+        error: `Username is required.`,
       });
       return;
     }

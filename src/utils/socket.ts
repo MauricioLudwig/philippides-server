@@ -2,13 +2,22 @@ import { io } from '../app';
 import socketio from 'socket.io';
 
 import { userTable } from '../db/user-table';
-import { IMessageRequest, SocketType, IUser } from './definitions';
+import { SocketType, IUser } from './definitions';
 import { logger } from './logger';
 import { Message } from './message';
+import { isMessageRequest, isValidString } from './validator';
 
 io.on(SocketType.Connection, (socket: socketio.Socket): void => {
   logger.info(`new connection established, socket id: ${socket.id}`);
-  const { userId }: { userId: string } = socket.handshake.query;
+  const { userId }: { userId: unknown } = socket.handshake.query;
+
+  if (!isValidString(userId)) {
+    logger.info(
+      `socket connection terminated, invalid user id, ${userId}, provided`
+    );
+    socket.disconnect();
+    return;
+  }
 
   if (!userTable.exists(userId)) {
     logger.info(
@@ -31,7 +40,14 @@ io.on(SocketType.Connection, (socket: socketio.Socket): void => {
   // receive and send user messages
   socket.on(SocketType.NewMessage, (req: unknown) => {
     logger.info('new message received (user message)');
-    const { id, text } = req as IMessageRequest;
+
+    if (!isMessageRequest(req)) {
+      logger.info('message rejected, wrong payload');
+      socket.emit(SocketType.Alert, 'unable to process message');
+      return;
+    }
+
+    const { id, text } = req;
     io.emit(SocketType.NewMessage, new Message().new(id, text));
     logger.info('new message sent (user message)');
   });

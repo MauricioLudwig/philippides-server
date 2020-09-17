@@ -36,4 +36,5 @@ export enum SocketType {
   UserDisconnected = 'user-disconnected',
   UserInactive = 'user-inactive',
   ActiveUsers = 'active-users',
+  Alert = 'alert',
 }

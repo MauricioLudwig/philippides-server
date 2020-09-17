@@ -1,13 +1,17 @@
 /**
- * * Type guards to ensure valid request data at runtime
+ * * User-Defined Type Guards to ensure valid data at runtime
  */
 
 import { IRequest, IMessageRequest } from './definitions';
 
 export const isRequest = (req: any): req is IRequest => {
-  return typeof req?.id === 'string';
+  return isValidString(req?.id);
 };
 
 export const isMessageRequest = (req: any): req is IMessageRequest => {
-  return typeof req?.id === 'string' && typeof req?.message === 'string';
+  return isValidString(req?.id) && isValidString(req?.text);
+};
+
+export const isValidString = (req: unknown): req is string => {
+  return typeof req === 'string' && req.length > 0;
 };
