@@ -2,10 +2,17 @@ import { io } from '../app';
 import socketio from 'socket.io';
 
 import { userTable } from '../db/user-table';
-import { SocketType, IUser } from './definitions';
+import { SocketType } from './definitions';
 import { logger } from './logger';
 import { Message } from './message';
 import { isMessageRequest, isValidString } from './validator';
+
+const { INACTIVITY_TIMEOUT } = process.env;
+
+const timer =
+  typeof INACTIVITY_TIMEOUT === 'string' && Number(INACTIVITY_TIMEOUT)
+    ? parseInt(INACTIVITY_TIMEOUT)
+    : 1000 * 15 * 60; // 15 minutes
 
 io.on(SocketType.Connection, (socket: socketio.Socket): void => {
   logger.info(`new connection established, socket id: ${socket.id}`);
@@ -39,6 +46,8 @@ io.on(SocketType.Connection, (socket: socketio.Socket): void => {
 
   // receive and send user messages
   socket.on(SocketType.NewMessage, (req: unknown) => {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = initTimeout();
     logger.info('new message received (user message)');
 
     if (!isMessageRequest(req)) {
@@ -52,43 +61,38 @@ io.on(SocketType.Connection, (socket: socketio.Socket): void => {
     logger.info('new message sent (user message)');
   });
 
-  // send message about disconnected user and update list of active users
-  socket.on(SocketType.UserDisconnected, () => {
-    logger.info('remove user due to disconnect');
-    const { name } = removeUser(socket.id);
-    socket.broadcast.emit(SocketType.ActiveUsers, userTable.activeUsers);
-    socket.broadcast.emit(
-      SocketType.NewMessage,
-      new Message().userDisconnected(name)
-    );
-  });
-
-  // send message about inactive user and update list of active users
-  socket.on(SocketType.UserInactive, () => {
-    logger.info('remove user due to inactivity');
-    const { name } = removeUser(socket.id);
-    socket.broadcast.emit(SocketType.ActiveUsers, userTable.activeUsers);
-    socket.broadcast.emit(
-      SocketType.NewMessage,
-      new Message().userInactive(name)
-    );
-  });
-
-  // send message about disconnected user and update list of active users
+  // remove disconnected user, update list of active users and send message (in case user was not previously removed)
   socket.on(SocketType.Disconnect, () => {
-    logger.info('socket disconnected');
-    const { name } = removeUser(socket.id);
+    logger.info(`user disconnected, socket id: ${socket.id}`);
+    const removedUser = userTable.remove(socket.id);
     socket.broadcast.emit(SocketType.ActiveUsers, userTable.activeUsers);
-    socket.broadcast.emit(
-      SocketType.NewMessage,
-      new Message().userDisconnected(name)
-    );
+    if (removedUser) {
+      socket.broadcast.emit(
+        SocketType.NewMessage,
+        new Message().userDisconnected(removedUser.name)
+      );
+    }
   });
 
-  // helper function to remove user
-  const removeUser = (socketId: string): IUser => {
-    const user = userTable.remove(socketId);
-    logger.info(`remove user ${user.name} by id: ${user.id}`);
-    return user;
+  // remove inactive user, update list of active users and send message (in case user was not previously removed)
+  socket.on(SocketType.UserInactive, () => {
+    logger.info(`user disconnected due to inactivity, socket id: ${socket.id}`);
+    const removedUser = userTable.remove(socket.id);
+    socket.broadcast.emit(SocketType.ActiveUsers, userTable.activeUsers);
+    if (removedUser) {
+      socket.broadcast.emit(
+        SocketType.NewMessage,
+        new Message().userInactive(removedUser.name)
+      );
+    }
+  });
+
+  // inactivity timer
+  const initTimeout = () => {
+    return setTimeout(() => {
+      socket.emit(SocketType.UserInactive);
+    }, timer);
   };
+
+  let inactivityTimer = initTimeout();
 });

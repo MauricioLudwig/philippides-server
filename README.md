@@ -5,6 +5,9 @@ Backend service built on Node.js and TypeScript. Namesake owed the historical fi
 ```
 clone or fork repo
 npm install
+
+create a .env file at the root of the project. Must contain an INACTIVITY_TIMEOUT key with a numerical value (timeout in ms). It will otherwise default to 15 min.
+
 npm run start OR npm run dev (to watch for changes)
 
 optional:

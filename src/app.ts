@@ -3,6 +3,9 @@ import express from 'express';
 import socketio from 'socket.io';
 import cors from 'cors';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 require('./db/user-table'); // initializes the mock user table
 import usersRouter from './routers/users';
 import { logger } from './utils/logger';
